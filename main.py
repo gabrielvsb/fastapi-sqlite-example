@@ -56,7 +56,7 @@ def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
 # books
 @app.get("/api/books/", response_model=list[schemas.Book])
 def read_books(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return crud.get_book(db, skip=skip, limit=limit)
+    return crud.get_books(db, skip=skip, limit=limit)
 
 @app.get("/api/books/{book_id}", response_model=schemas.Book)
 def read_book(book_id: int, db: Session = Depends(get_db)):
