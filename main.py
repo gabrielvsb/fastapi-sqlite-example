@@ -68,3 +68,33 @@ def read_book(book_id: int, db: Session = Depends(get_db)):
 @app.post("/api/book/", response_model=schemas.Book)
 def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
     return crud.create_book(db=db, book=book)
+
+# sales
+@app.get("/api/sales/", response_model=list[schemas.Sale])
+def read_sales(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return crud.get_sales(db, skip=skip, limit=limit)
+
+@app.get("/api/books/{book_id}", response_model=schemas.Book)
+def read_book(book_id: int, db: Session = Depends(get_db)):
+    db_sale = crud.get_book(db, book_id=book_id)
+    if db_sale is None:
+        raise HTTPException(status_code=404, detail="Sale not found")
+    return db_sale
+
+@app.get("/api/sales/by_book/{book_id}", response_model=list[schemas.Sale])
+def read_sale_by_book(book_id: int, db: Session = Depends(get_db)):
+    db_sale = crud.get_sale_by_book(db, book_id=book_id)
+    if db_sale is None:
+        raise HTTPException(status_code=404, detail="Sale not found")
+    return db_sale
+
+@app.get("/api/sales/by_client/{client_id}", response_model=list[schemas.Sale])
+def read_sale_by_client(client_id: int, db: Session = Depends(get_db)):
+    db_sale = crud.get_sale_by_client(db, client_id=client_id)
+    if db_sale is None:
+        raise HTTPException(status_code=404, detail="Sale not found")
+    return db_sale
+
+@app.post("/api/sales/", response_model=schemas.Sale)
+def create_sale(sale: schemas.SaleCreate, db: Session = Depends(get_db)):
+    return crud.create_sale(db=db, sale=sale)

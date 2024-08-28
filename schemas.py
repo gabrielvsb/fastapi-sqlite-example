@@ -32,7 +32,7 @@ class Author(AuthorBase):
 
 class SaleBase(BaseModel):
     client_id: int
-    bool_id: int
+    book_id: int
 
 class SaleCreate(SaleBase):
     pass
